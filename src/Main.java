@@ -1,7 +1,10 @@
 import model.Artista;
 import service.ArtistaService;
 import util.InicializadorFicheros;
-
+import model.Actuacion;
+import model.Escenario;
+import service.ActuacionService;
+import service.EscenarioService;
 import java.util.List;
 
 public class Main {
@@ -87,5 +90,38 @@ public class Main {
         for (Artista artista : artistaService.listar()) {
             System.out.println(artista);
         }
+
+
+        // Creamos los Services
+        EscenarioService escenarioService = new EscenarioService();
+        ActuacionService actuacionService = new ActuacionService();
+
+// Creamos un escenario
+        Escenario escenario1 = new Escenario(
+                2,
+                "Escenario Principal",
+                "Zona central",
+                5000
+        );
+
+// Guardamos el escenario
+        escenarioService.guardar(escenario1);
+
+// Creamos una actuación relacionada con el artista 1
+        Actuacion actuacion1 = new Actuacion(
+                2,
+                2,
+                1,
+                java.time.LocalDate.of(2026, 10, 15),
+                "21:00",
+                90
+        );
+
+// Guardamos la actuación
+        if (actuacionService.guardar(actuacion1)) {
+            System.out.println("Actuación guardada correctamente.");
+        }
     }
+
+
 }
