@@ -2,15 +2,20 @@ package service;
 
 import dao.EspectadorDAO;
 import model.Espectador;
+import xml.DOMXML;
 
 import java.util.List;
 
 public class EspectadorService {
 
     private EspectadorDAO espectadorDAO;
+    private DOMXML domXML;
+
 
     public EspectadorService() {
         espectadorDAO = new EspectadorDAO();
+        domXML = new DOMXML();
+
     }
 
     public boolean guardar(Espectador espectador) {
@@ -59,5 +64,11 @@ public class EspectadorService {
         }
 
         return espectadorDAO.eliminar(id);
+    }
+    public void exportarXML() {
+
+        List<Espectador> espectadores = listar();
+
+        domXML.exportarEspectadores(espectadores);
     }
 }
