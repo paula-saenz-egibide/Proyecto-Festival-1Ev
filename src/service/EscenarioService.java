@@ -2,15 +2,20 @@ package service;
 
 import dao.EscenarioDAO;
 import model.Escenario;
+import xml.DOMXML;
 
 import java.util.List;
 
 public class EscenarioService {
 
     private EscenarioDAO escenarioDAO;
+    private DOMXML domXML;
+
 
     public EscenarioService() {
         escenarioDAO = new EscenarioDAO();
+        domXML = new DOMXML();
+
     }
 
     public boolean guardar(Escenario escenario) {
@@ -59,5 +64,12 @@ public class EscenarioService {
         }
 
         return escenarioDAO.eliminar(id);
+    }
+
+    public void exportarXML() {
+
+        List<Escenario> escenarios = listar();
+
+        domXML.exportarEscenarios(escenarios);
     }
 }
