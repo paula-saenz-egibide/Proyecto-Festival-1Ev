@@ -4,6 +4,7 @@ import dao.ActuacionDAO;
 import dao.EntradaDAO;
 import dao.EspectadorDAO;
 import model.Entrada;
+import xml.XStreamXML;
 
 import java.util.List;
 
@@ -12,11 +13,14 @@ public class EntradaService {
     private EntradaDAO entradaDAO;
     private ActuacionDAO actuacionDAO;
     private EspectadorDAO espectadorDAO;
+    private XStreamXML xStreamXML;
 
     public EntradaService() {
         entradaDAO = new EntradaDAO();
         actuacionDAO = new ActuacionDAO();
         espectadorDAO = new EspectadorDAO();
+        xStreamXML = new XStreamXML();
+
     }
 
     public boolean guardar(Entrada entrada) {
@@ -85,5 +89,12 @@ public class EntradaService {
         }
 
         return entradaDAO.eliminar(id);
+    }
+
+    public void exportarXML() {
+
+        List<Entrada> entradas = listar();
+
+        xStreamXML.exportarEntradas(entradas);
     }
 }

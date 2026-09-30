@@ -4,6 +4,7 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 import model.Artista;
 import model.Actuacion;
+import model.Entrada;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -32,6 +33,17 @@ public class XStreamXML {
         String xml = xstream.toXML(actuaciones);
 
         guardarFichero(xml, "data/actuaciones.xml");
+    }
+
+    public void exportarEntradas(List<Entrada> entradas) {
+
+        XStream xstream = new XStream(new StaxDriver());
+
+        xstream.alias("entrada", Entrada.class);
+
+        String xml = xstream.toXML(entradas);
+
+        guardarFichero(xml, "data/entradas.xml");
     }
 
     private void guardarFichero(String xml, String fichero) {
