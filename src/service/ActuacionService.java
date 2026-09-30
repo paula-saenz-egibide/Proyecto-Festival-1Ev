@@ -4,6 +4,7 @@ import dao.ActuacionDAO;
 import dao.ArtistaDAO;
 import dao.EscenarioDAO;
 import model.Actuacion;
+import xml.XStreamXML;
 
 import java.util.List;
 
@@ -12,11 +13,15 @@ public class ActuacionService {
     private ActuacionDAO actuacionDAO;
     private ArtistaDAO artistaDAO;
     private EscenarioDAO escenarioDAO;
+    private XStreamXML xStreamXML;
+
 
     public ActuacionService() {
         actuacionDAO = new ActuacionDAO();
         artistaDAO = new ArtistaDAO();
         escenarioDAO = new EscenarioDAO();
+        xStreamXML = new XStreamXML();
+
     }
 
     public boolean guardar(Actuacion actuacion) {
@@ -85,5 +90,12 @@ public class ActuacionService {
         }
 
         return actuacionDAO.eliminar(id);
+    }
+
+    public void exportarXML() {
+
+        List<Actuacion> actuaciones = listar();
+
+        xStreamXML.exportarActuaciones(actuaciones);
     }
 }

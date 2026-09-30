@@ -2,15 +2,20 @@ package service;
 
 import dao.ArtistaDAO;
 import model.Artista;
+import xml.XStreamXML;
 
 import java.util.List;
 
 public class ArtistaService {
 
     private ArtistaDAO artistaDAO;
+    private XStreamXML xStreamXML;
+
 
     public ArtistaService() {
         artistaDAO = new ArtistaDAO();
+        xStreamXML = new XStreamXML();
+
     }
 
     public boolean guardar(Artista artista) {
@@ -59,5 +64,12 @@ public class ArtistaService {
         }
 
         return artistaDAO.eliminar(id);
+    }
+
+    public void exportarXML() {
+
+        List<Artista> artistas = listar();
+
+        xStreamXML.exportarArtistas(artistas);
     }
 }
