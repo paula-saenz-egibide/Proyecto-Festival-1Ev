@@ -243,7 +243,7 @@ Además de las operaciones básicas de alta, baja, modificación y listado, el
 proyecto incluye ampliaciones relacionadas con los puntos extra del enunciado.
 
 | Ampliación | Qué hace la aplicación |
-|---|---|---|
+|---|---|
 | Más clases y ficheros | Gestiona cinco modelos serializables relacionados y cinco ficheros `.dat`, más que el mínimo de tres. |
 | Búsquedas y reglas del festival | Busca artistas por género y país, actuaciones por fecha y registros por ID. Comprueba relaciones, solapamientos horarios y capacidad de entradas. |
 | XML con dos métodos | Exporta XML con XStream y también con DOM de Java, una técnica distinta. |
