@@ -19,6 +19,7 @@ const singulares = {
 };
 
 let artistasCargados = [];
+let actuacionesCargadas = [];
 
 async function leerRespuesta(respuesta) {
     const texto = await respuesta.text();
@@ -82,6 +83,11 @@ async function cargarDatos(tipo) {
             artistasCargados = datos;
             actualizarFiltrosArtistas(datos);
             datos = filtrarListaArtistas(datos);
+        }
+
+        if (tipo === "actuaciones") {
+            actuacionesCargadas = datos;
+            datos = filtrarListaActuaciones(datos);
         }
 
         mostrarDatos(tipo, datos);
@@ -250,6 +256,21 @@ function filtrarListaArtistas(artistas) {
 
 function filtrarArtistas() {
     mostrarDatos("artistas", filtrarListaArtistas(artistasCargados));
+}
+
+function filtrarListaActuaciones(actuaciones) {
+    const fecha = document.getElementById("filtro-fecha-actuacion").value;
+
+    return fecha
+        ? actuaciones.filter(actuacion => actuacion.fecha === fecha)
+        : actuaciones;
+}
+
+function filtrarActuaciones() {
+    mostrarDatos(
+        "actuaciones",
+        filtrarListaActuaciones(actuacionesCargadas)
+    );
 }
 
 
