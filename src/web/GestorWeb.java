@@ -20,6 +20,181 @@ public class GestorWeb {
     private EspectadorService espectadorService = new EspectadorService();
     private EntradaService entradaService = new EntradaService();
 
+    public ResultadoOperacion guardarArtistaDetallado(Artista artista) {
+        if (artista == null) return ResultadoOperacion.error("El artista no puede ser null.");
+        if (artistaService.buscarPorId(artista.getId()) != null) {
+            return ResultadoOperacion.error("Ya existe un artista con ese ID.");
+        }
+        return resultado(artistaService.guardar(artista), "No se pudo guardar el artista.");
+    }
+
+    public ResultadoOperacion modificarArtistaDetallado(Artista artista) {
+        if (artista == null) return ResultadoOperacion.error("El artista no puede ser null.");
+        if (artistaService.buscarPorId(artista.getId()) == null) {
+            return ResultadoOperacion.error("No existe un artista con ese ID.");
+        }
+        return resultado(artistaService.modificar(artista), "No se pudo modificar el artista.");
+    }
+
+    public ResultadoOperacion eliminarArtistaDetallado(int id) {
+        if (artistaService.buscarPorId(id) == null) {
+            return ResultadoOperacion.error("No existe un artista con ese ID.");
+        }
+        return resultado(artistaService.eliminar(id), "No se pudo eliminar el artista.");
+    }
+
+    public ResultadoOperacion guardarEscenarioDetallado(Escenario escenario) {
+        if (escenario == null) return ResultadoOperacion.error("El escenario no puede ser null.");
+        if (escenarioService.buscarPorId(escenario.getId()) != null) {
+            return ResultadoOperacion.error("Ya existe un escenario con ese ID.");
+        }
+        return resultado(escenarioService.guardar(escenario), "No se pudo guardar el escenario.");
+    }
+
+    public ResultadoOperacion modificarEscenarioDetallado(Escenario escenario) {
+        if (escenario == null) return ResultadoOperacion.error("El escenario no puede ser null.");
+        if (escenarioService.buscarPorId(escenario.getId()) == null) {
+            return ResultadoOperacion.error("No existe un escenario con ese ID.");
+        }
+        return resultado(escenarioService.modificar(escenario), "No se pudo modificar el escenario.");
+    }
+
+    public ResultadoOperacion eliminarEscenarioDetallado(int id) {
+        if (escenarioService.buscarPorId(id) == null) {
+            return ResultadoOperacion.error("No existe un escenario con ese ID.");
+        }
+        return resultado(escenarioService.eliminar(id), "No se pudo eliminar el escenario.");
+    }
+
+    public ResultadoOperacion guardarActuacionDetallado(Actuacion actuacion) {
+        if (actuacion == null) return ResultadoOperacion.error("La actuación no puede ser null.");
+        if (actuacionService.buscarPorId(actuacion.getId()) != null) {
+            return ResultadoOperacion.error("Ya existe una actuación con ese ID.");
+        }
+        if (artistaService.buscarPorId(actuacion.getIdArtista()) == null) {
+            return ResultadoOperacion.error("El artista indicado no existe.");
+        }
+        if (escenarioService.buscarPorId(actuacion.getIdEscenario()) == null) {
+            return ResultadoOperacion.error("El escenario indicado no existe.");
+        }
+        if (actuacionService.hayConflictoHorario(actuacion)) {
+            return ResultadoOperacion.error("La actuación se solapa con otra del mismo escenario.");
+        }
+        return resultado(actuacionService.guardar(actuacion), "No se pudo guardar la actuación.");
+    }
+
+    public ResultadoOperacion modificarActuacionDetallado(Actuacion actuacion) {
+        if (actuacion == null) return ResultadoOperacion.error("La actuación no puede ser null.");
+        if (actuacionService.hayConflictoHorario(actuacion)) {
+            return ResultadoOperacion.error("La actuación se solapa con otra del mismo escenario.");
+        }
+        if (actuacionService.buscarPorId(actuacion.getId()) == null) {
+            return ResultadoOperacion.error("No existe una actuación con ese ID.");
+        }
+        if (artistaService.buscarPorId(actuacion.getIdArtista()) == null) {
+            return ResultadoOperacion.error("El artista indicado no existe.");
+        }
+        if (escenarioService.buscarPorId(actuacion.getIdEscenario()) == null) {
+            return ResultadoOperacion.error("El escenario indicado no existe.");
+        }
+        return resultado(actuacionService.modificar(actuacion), "No se pudo modificar la actuación.");
+    }
+
+    public ResultadoOperacion eliminarActuacionDetallado(int id) {
+        if (actuacionService.buscarPorId(id) == null) {
+            return ResultadoOperacion.error("No existe una actuación con ese ID.");
+        }
+        return resultado(actuacionService.eliminar(id), "No se pudo eliminar la actuación.");
+    }
+
+    public ResultadoOperacion guardarEspectadorDetallado(Espectador espectador) {
+        if (espectador == null) return ResultadoOperacion.error("El espectador no puede ser null.");
+        if (espectadorService.buscarPorId(espectador.getId()) != null) {
+            return ResultadoOperacion.error("Ya existe un espectador con ese ID.");
+        }
+        return resultado(espectadorService.guardar(espectador), "No se pudo guardar el espectador.");
+    }
+
+    public ResultadoOperacion modificarEspectadorDetallado(Espectador espectador) {
+        if (espectador == null) return ResultadoOperacion.error("El espectador no puede ser null.");
+        if (espectadorService.buscarPorId(espectador.getId()) == null) {
+            return ResultadoOperacion.error("No existe un espectador con ese ID.");
+        }
+        return resultado(espectadorService.modificar(espectador), "No se pudo modificar el espectador.");
+    }
+
+    public ResultadoOperacion eliminarEspectadorDetallado(int id) {
+        if (espectadorService.buscarPorId(id) == null) {
+            return ResultadoOperacion.error("No existe un espectador con ese ID.");
+        }
+        return resultado(espectadorService.eliminar(id), "No se pudo eliminar el espectador.");
+    }
+
+    public ResultadoOperacion guardarEntradaDetallado(Entrada entrada) {
+        if (entrada == null) return ResultadoOperacion.error("La entrada no puede ser null.");
+        if (entradaService.buscarPorId(entrada.getId()) != null) {
+            return ResultadoOperacion.error("Ya existe una entrada con ese ID.");
+        }
+        Actuacion actuacion = actuacionService.buscarPorId(entrada.getIdActuacion());
+        if (actuacion == null) {
+            return ResultadoOperacion.error("No existe la actuación indicada.");
+        }
+        if (espectadorService.buscarPorId(entrada.getIdEspectador()) == null) {
+            return ResultadoOperacion.error("No existe el espectador indicado.");
+        }
+        if (escenarioService.buscarPorId(actuacion.getIdEscenario()) == null) {
+            return ResultadoOperacion.error("No se encontró el escenario de la actuación.");
+        }
+        if (!entradaService.hayCapacidadDisponible(entrada.getIdActuacion())) {
+            return ResultadoOperacion.error("No hay capacidad disponible para la actuación.");
+        }
+        return resultado(guardarEntrada(entrada), "No se pudo guardar la entrada.");
+    }
+
+    public ResultadoOperacion modificarEntradaDetallado(Entrada entrada) {
+        if (entrada == null) return ResultadoOperacion.error("La entrada no puede ser null.");
+        if (entradaService.buscarPorId(entrada.getId()) == null) {
+            return ResultadoOperacion.error("No existe una entrada con ese ID.");
+        }
+        return resultado(entradaService.modificar(entrada), "No se pudo modificar la entrada.");
+    }
+
+    public ResultadoOperacion eliminarEntradaDetallado(int id) {
+        if (entradaService.buscarPorId(id) == null) {
+            return ResultadoOperacion.error("No existe una entrada con ese ID.");
+        }
+        return resultado(entradaService.eliminar(id), "No se pudo eliminar la entrada.");
+    }
+
+    private ResultadoOperacion resultado(boolean exito, String mensajeError) {
+        return exito
+                ? ResultadoOperacion.exito()
+                : ResultadoOperacion.error(mensajeError);
+    }
+
+    public static class ResultadoOperacion {
+        private final boolean exito;
+        private final String mensaje;
+
+        private ResultadoOperacion(boolean exito, String mensaje) {
+            this.exito = exito;
+            this.mensaje = mensaje;
+        }
+
+        public boolean esExito() {
+            return exito;
+        }
+
+        public static ResultadoOperacion exito() {
+            return new ResultadoOperacion(true, "Operación realizada correctamente.");
+        }
+
+        private static ResultadoOperacion error(String mensaje) {
+            System.out.println(mensaje);
+            return new ResultadoOperacion(false, mensaje);
+        }
+    }
+
     public List<Artista> listarArtistas() { return artistaService.listar(); }
     public Artista buscarArtista(int id) { return artistaService.buscarPorId(id); }
     public boolean guardarArtista(Artista artista) { return artistaService.guardar(artista); }

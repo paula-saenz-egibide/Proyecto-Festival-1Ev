@@ -10,6 +10,33 @@ const nombres = {
     entradas: "Entradas"
 };
 
+async function leerRespuesta(respuesta) {
+    const texto = await respuesta.text();
+    let resultado;
+
+    try {
+        resultado = JSON.parse(texto);
+    } catch (error) {
+        resultado = texto;
+    }
+
+    if (!respuesta.ok) {
+        const mensaje = resultado && typeof resultado === "object"
+            ? resultado.mensaje || resultado.message
+            : resultado;
+
+        throw new Error(mensaje || `Error HTTP ${respuesta.status}`);
+    }
+
+    return resultado;
+}
+
+function mostrarError(error, mensajePredeterminado) {
+    return error instanceof TypeError
+        ? mensajePredeterminado
+        : error.message || mensajePredeterminado;
+}
+
 botones.forEach(boton => {
     boton.addEventListener("click", () => {
         const vista = boton.dataset.view;
@@ -39,20 +66,17 @@ async function cargarDatos(tipo) {
 
     try {
         const respuesta = await fetch("/api/" + tipo);
-
-        if (!respuesta.ok) {
-            throw new Error("Error HTTP " + respuesta.status);
-        }
-
-        const datos = await respuesta.json();
+        const datos = await leerRespuesta(respuesta);
 
         mostrarDatos(tipo, datos);
 
         actualizarEstadisticas();
 
     } catch (error) {
-        contenedor.innerHTML =
-            "No se ha podido conectar con el servidor.";
+        contenedor.textContent = mostrarError(
+            error,
+            "No se ha podido conectar con el servidor."
+        );
 
         console.error(error);
     }
@@ -143,12 +167,7 @@ async function buscarPorId(tipo) {
         const respuesta = await fetch(
             `/api/${tipo}/${id}`
         );
-
-        if (!respuesta.ok) {
-            throw new Error("Error HTTP " + respuesta.status);
-        }
-
-        const objeto = await respuesta.json();
+        const objeto = await leerRespuesta(respuesta);
 
         const contenedor =
             document.getElementById("lista-" + tipo);
@@ -165,10 +184,8 @@ async function buscarPorId(tipo) {
     } catch (error) {
         console.error(error);
 
-        document.getElementById(
-            "lista-" + tipo
-        ).innerHTML =
-            "No se ha podido conectar con el servidor.";
+        document.getElementById("lista-" + tipo).textContent =
+            mostrarError(error, "No se ha podido conectar con el servidor.");
     }
 }
 
@@ -186,17 +203,17 @@ async function eliminar(id, tipo) {
             }
         );
 
-        const resultado = await respuesta.json();
+        const resultado = await leerRespuesta(respuesta);
 
-        if (resultado === true) {
+        if (resultado.exito === true) {
             cargarDatos(tipo);
             actualizarEstadisticas();
         } else {
-            alert("No se ha podido eliminar.");
+            alert(resultado.mensaje || "No se ha podido eliminar.");
         }
 
     } catch (error) {
-        alert("Error al conectar con el servidor.");
+        alert(mostrarError(error, "Error al conectar con el servidor."));
         console.error(error);
     }
 }
@@ -214,7 +231,7 @@ async function mostrarFormulario(tipo, id = null) {
         const respuesta =
             await fetch(`/api/esquema/${tipo}`);
 
-        const campos = await respuesta.json();
+        const campos = await leerRespuesta(respuesta);
 
         let datos = {};
 
@@ -222,7 +239,7 @@ async function mostrarFormulario(tipo, id = null) {
             const respuestaDatos =
                 await fetch(`/api/${tipo}/${id}`);
 
-            datos = await respuestaDatos.json();
+            datos = await leerRespuesta(respuestaDatos);
         }
 
         let html = `
@@ -292,8 +309,8 @@ async function mostrarFormulario(tipo, id = null) {
     } catch (error) {
         console.error(error);
 
-        contenedor.innerHTML =
-            "No se ha podido cargar el formulario.";
+        contenedor.textContent =
+            mostrarError(error, "No se ha podido cargar el formulario.");
     }
 }
 
@@ -338,10 +355,9 @@ async function guardarFormulario(tipo, id) {
                 body: JSON.stringify(objeto)
             });
 
-        const resultado =
-            await respuesta.json();
+        const resultado = await leerRespuesta(respuesta);
 
-        if (resultado === true) {
+        if (resultado.exito === true) {
 
             alert(
                 id === null
@@ -355,12 +371,13 @@ async function guardarFormulario(tipo, id) {
 
         } else {
             alert(
+                resultado.mensaje ||
                 "No se ha podido guardar o modificar el registro."
             );
         }
 
     } catch (error) {
-        alert("Error al conectar con el servidor.");
+        alert(mostrarError(error, "Error al conectar con el servidor."));
         console.error(error);
     }
 }
@@ -387,12 +404,7 @@ async function generarArchivo(tipo, formato) {
                 `/api/archivos/${tipo}/${formato}/generar`
             );
 
-        if (!respuesta.ok) {
-            throw new Error("No se ha podido generar el archivo.");
-        }
-
-        const resultado =
-            await respuesta.json();
+        const resultado = await leerRespuesta(respuesta);
 
         if (resultado === true) {
             alert(
@@ -401,9 +413,7 @@ async function generarArchivo(tipo, formato) {
         }
 
     } catch (error) {
-        alert(
-            "No se ha podido generar el archivo."
-        );
+        alert(mostrarError(error, "No se ha podido generar el archivo."));
 
         console.error(error);
     }
@@ -418,14 +428,14 @@ function descargarArchivo(tipo, formato) {
 
 async function actualizarEstadisticas() {
     try {
-        const artistas =
-            await fetch("/api/artistas").then(r => r.json());
+        const respuestaArtistas = await fetch("/api/artistas");
+        const artistas = await leerRespuesta(respuestaArtistas);
 
-        const escenarios =
-            await fetch("/api/escenarios").then(r => r.json());
+        const respuestaEscenarios = await fetch("/api/escenarios");
+        const escenarios = await leerRespuesta(respuestaEscenarios);
 
-        const entradas =
-            await fetch("/api/entradas").then(r => r.json());
+        const respuestaEntradas = await fetch("/api/entradas");
+        const entradas = await leerRespuesta(respuestaEntradas);
 
         document.getElementById(
             "total-artistas"

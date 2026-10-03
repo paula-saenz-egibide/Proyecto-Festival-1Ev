@@ -144,11 +144,7 @@ public class Servidor {
                         Artista.class
                 );
 
-                responder(
-                        exchange,
-                        gson.toJson(gestorWeb.guardarArtista(artista)),
-                        200
-                );
+                responderOperacion(exchange, gestorWeb.guardarArtistaDetallado(artista));
 
             } else if (metodo.equals("PUT")) {
 
@@ -157,19 +153,11 @@ public class Servidor {
                         Artista.class
                 );
 
-                responder(
-                        exchange,
-                        gson.toJson(gestorWeb.modificarArtista(artista)),
-                        200
-                );
+                responderOperacion(exchange, gestorWeb.modificarArtistaDetallado(artista));
 
             } else if (metodo.equals("DELETE") && id != null) {
 
-                responder(
-                        exchange,
-                        gson.toJson(gestorWeb.eliminarArtista(id)),
-                        200
-                );
+                responderOperacion(exchange, gestorWeb.eliminarArtistaDetallado(id));
 
             } else {
 
@@ -180,11 +168,7 @@ public class Servidor {
 
             e.printStackTrace();
 
-            responder(
-                    exchange,
-                    "Error: " + e.getMessage(),
-                    500
-            );
+            responderError(exchange, e, 500);
         }
     }
 
@@ -222,11 +206,7 @@ public class Servidor {
                         Escenario.class
                 );
 
-                responder(
-                        exchange,
-                        gson.toJson(gestorWeb.guardarEscenario(escenario)),
-                        200
-                );
+                responderOperacion(exchange, gestorWeb.guardarEscenarioDetallado(escenario));
 
             } else if (metodo.equals("PUT")) {
 
@@ -235,19 +215,11 @@ public class Servidor {
                         Escenario.class
                 );
 
-                responder(
-                        exchange,
-                        gson.toJson(gestorWeb.modificarEscenario(escenario)),
-                        200
-                );
+                responderOperacion(exchange, gestorWeb.modificarEscenarioDetallado(escenario));
 
             } else if (metodo.equals("DELETE") && id != null) {
 
-                responder(
-                        exchange,
-                        gson.toJson(gestorWeb.eliminarEscenario(id)),
-                        200
-                );
+                responderOperacion(exchange, gestorWeb.eliminarEscenarioDetallado(id));
 
             } else {
 
@@ -258,11 +230,7 @@ public class Servidor {
 
             e.printStackTrace();
 
-            responder(
-                    exchange,
-                    "Error: " + e.getMessage(),
-                    500
-            );
+            responderError(exchange, e, 500);
         }
     }
 
@@ -300,11 +268,7 @@ public class Servidor {
                         Actuacion.class
                 );
 
-                responder(
-                        exchange,
-                        gson.toJson(gestorWeb.guardarActuacion(actuacion)),
-                        200
-                );
+                responderOperacion(exchange, gestorWeb.guardarActuacionDetallado(actuacion));
 
             } else if (metodo.equals("PUT")) {
 
@@ -313,19 +277,11 @@ public class Servidor {
                         Actuacion.class
                 );
 
-                responder(
-                        exchange,
-                        gson.toJson(gestorWeb.modificarActuacion(actuacion)),
-                        200
-                );
+                responderOperacion(exchange, gestorWeb.modificarActuacionDetallado(actuacion));
 
             } else if (metodo.equals("DELETE") && id != null) {
 
-                responder(
-                        exchange,
-                        gson.toJson(gestorWeb.eliminarActuacion(id)),
-                        200
-                );
+                responderOperacion(exchange, gestorWeb.eliminarActuacionDetallado(id));
 
             } else {
 
@@ -336,11 +292,7 @@ public class Servidor {
 
             e.printStackTrace();
 
-            responder(
-                    exchange,
-                    "Error: " + e.getMessage(),
-                    500
-            );
+            responderError(exchange, e, 500);
         }
     }
 
@@ -378,11 +330,7 @@ public class Servidor {
                         Espectador.class
                 );
 
-                responder(
-                        exchange,
-                        gson.toJson(gestorWeb.guardarEspectador(espectador)),
-                        200
-                );
+                responderOperacion(exchange, gestorWeb.guardarEspectadorDetallado(espectador));
 
             } else if (metodo.equals("PUT")) {
 
@@ -391,19 +339,11 @@ public class Servidor {
                         Espectador.class
                 );
 
-                responder(
-                        exchange,
-                        gson.toJson(gestorWeb.modificarEspectador(espectador)),
-                        200
-                );
+                responderOperacion(exchange, gestorWeb.modificarEspectadorDetallado(espectador));
 
             } else if (metodo.equals("DELETE") && id != null) {
 
-                responder(
-                        exchange,
-                        gson.toJson(gestorWeb.eliminarEspectador(id)),
-                        200
-                );
+                responderOperacion(exchange, gestorWeb.eliminarEspectadorDetallado(id));
 
             } else {
 
@@ -414,11 +354,7 @@ public class Servidor {
 
             e.printStackTrace();
 
-            responder(
-                    exchange,
-                    "Error: " + e.getMessage(),
-                    500
-            );
+            responderError(exchange, e, 500);
         }
     }
 
@@ -456,11 +392,7 @@ public class Servidor {
                         Entrada.class
                 );
 
-                responder(
-                        exchange,
-                        gson.toJson(gestorWeb.guardarEntrada(entrada)),
-                        200
-                );
+                responderOperacion(exchange, gestorWeb.guardarEntradaDetallado(entrada));
 
             } else if (metodo.equals("PUT")) {
 
@@ -469,19 +401,11 @@ public class Servidor {
                         Entrada.class
                 );
 
-                responder(
-                        exchange,
-                        gson.toJson(gestorWeb.modificarEntrada(entrada)),
-                        200
-                );
+                responderOperacion(exchange, gestorWeb.modificarEntradaDetallado(entrada));
 
             } else if (metodo.equals("DELETE") && id != null) {
 
-                responder(
-                        exchange,
-                        gson.toJson(gestorWeb.eliminarEntrada(id)),
-                        200
-                );
+                responderOperacion(exchange, gestorWeb.eliminarEntradaDetallado(id));
 
             } else {
 
@@ -492,11 +416,7 @@ public class Servidor {
 
             e.printStackTrace();
 
-            responder(
-                    exchange,
-                    "Error: " + e.getMessage(),
-                    500
-            );
+            responderError(exchange, e, 500);
         }
     }
 
@@ -532,11 +452,7 @@ public class Servidor {
 
                 e.printStackTrace();
 
-                responder(
-                        exchange,
-                        "Error al generar el archivo",
-                        500
-                );
+                responderError(exchange, e, 500);
             }
 
             return;
@@ -726,6 +642,33 @@ public class Servidor {
         }
 
         return null;
+    }
+
+    private static void responderOperacion(
+            HttpExchange exchange,
+            GestorWeb.ResultadoOperacion resultado
+    ) throws IOException {
+        responder(
+                exchange,
+                gson.toJson(resultado),
+                resultado.esExito() ? 200 : 400
+        );
+    }
+
+    private static void responderError(
+            HttpExchange exchange,
+            Exception error,
+            int codigo
+    ) throws IOException {
+        Map<String, Object> respuesta = new LinkedHashMap<>();
+        respuesta.put("exito", false);
+        respuesta.put(
+                "mensaje",
+                error.getMessage() == null
+                        ? error.getClass().getSimpleName()
+                        : error.getMessage()
+        );
+        responder(exchange, gson.toJson(respuesta), codigo);
     }
 
     private static void responder(
