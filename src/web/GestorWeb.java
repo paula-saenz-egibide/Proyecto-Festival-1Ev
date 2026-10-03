@@ -12,8 +12,14 @@ import service.EspectadorService;
 import service.EntradaService;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class GestorWeb {
+    private static final Pattern FORMATO_EMAIL =
+            Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
+    private static final String ERROR_EMAIL =
+            "Error: introduce un email válido, por ejemplo usuario@gmail.com.";
+
     private ArtistaService artistaService = new ArtistaService();
     private ActuacionService actuacionService = new ActuacionService();
     private EscenarioService escenarioService = new EscenarioService();
@@ -109,6 +115,9 @@ public class GestorWeb {
 
     public ResultadoOperacion guardarEspectadorDetallado(Espectador espectador) {
         if (espectador == null) return ResultadoOperacion.error("El espectador no puede ser null.");
+        if (!emailValido(espectador.getEmail())) {
+            return ResultadoOperacion.error(ERROR_EMAIL);
+        }
         if (espectadorService.buscarPorId(espectador.getId()) != null) {
             return ResultadoOperacion.error("Ya existe un espectador con ese ID.");
         }
@@ -117,10 +126,17 @@ public class GestorWeb {
 
     public ResultadoOperacion modificarEspectadorDetallado(Espectador espectador) {
         if (espectador == null) return ResultadoOperacion.error("El espectador no puede ser null.");
+        if (!emailValido(espectador.getEmail())) {
+            return ResultadoOperacion.error(ERROR_EMAIL);
+        }
         if (espectadorService.buscarPorId(espectador.getId()) == null) {
             return ResultadoOperacion.error("No existe un espectador con ese ID.");
         }
         return resultado(espectadorService.modificar(espectador), "No se pudo modificar el espectador.");
+    }
+
+    private boolean emailValido(String email) {
+        return email != null && FORMATO_EMAIL.matcher(email).matches();
     }
 
     public ResultadoOperacion eliminarEspectadorDetallado(int id) {

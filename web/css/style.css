@@ -171,7 +171,8 @@ nav {
     border-radius: 8px;
 }
 
-.toolbar input {
+.toolbar input,
+.toolbar select {
     background: #15151f;
     border: 1px solid #292936;
     color: white;
@@ -252,6 +253,16 @@ nav {
     color: white;
     padding: 11px;
     border-radius: 7px;
+}
+
+.form-group.checkbox-group {
+    flex-direction: row;
+    align-items: center;
+}
+
+.form-group.checkbox-group input {
+    width: auto;
+    accent-color: #d28cff;
 }
 
 .form-buttons {

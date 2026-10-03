@@ -10,6 +10,16 @@ const nombres = {
     entradas: "Entradas"
 };
 
+const singulares = {
+    artistas: "artista",
+    escenarios: "escenario",
+    actuaciones: "actuacion",
+    espectadores: "espectador",
+    entradas: "entrada"
+};
+
+let artistasCargados = [];
+
 async function leerRespuesta(respuesta) {
     const texto = await respuesta.text();
     let resultado;
@@ -66,7 +76,13 @@ async function cargarDatos(tipo) {
 
     try {
         const respuesta = await fetch("/api/" + tipo);
-        const datos = await leerRespuesta(respuesta);
+        let datos = await leerRespuesta(respuesta);
+
+        if (tipo === "artistas") {
+            artistasCargados = datos;
+            actualizarFiltrosArtistas(datos);
+            datos = filtrarListaArtistas(datos);
+        }
 
         mostrarDatos(tipo, datos);
 
@@ -150,10 +166,8 @@ function mostrarDatos(tipo, datos) {
 
 
 async function buscarPorId(tipo) {
-    const singular = tipo.slice(0, -1);
-
     const input = document.getElementById(
-        "buscar-" + singular
+        "buscar-" + singulares[tipo]
     );
 
     const id = input.value;
@@ -187,6 +201,55 @@ async function buscarPorId(tipo) {
         document.getElementById("lista-" + tipo).textContent =
             mostrarError(error, "No se ha podido conectar con el servidor.");
     }
+}
+
+function actualizarFiltrosArtistas(artistas) {
+    const filtros = [
+        {
+            id: "filtro-genero-artista",
+            etiqueta: "Todos los géneros",
+            campo: "genero"
+        },
+        {
+            id: "filtro-pais-artista",
+            etiqueta: "Todos los países",
+            campo: "pais"
+        }
+    ];
+
+    filtros.forEach(({ id, etiqueta, campo }) => {
+        const select = document.getElementById(id);
+        const valorAnterior = select.value;
+        const valores = [...new Set(
+            artistas
+                .map(artista => artista[campo])
+                .filter(valor => valor !== null && valor !== undefined && valor !== "")
+        )].sort((a, b) => String(a).localeCompare(String(b), "es"));
+
+        select.replaceChildren(new Option(etiqueta, ""));
+
+        valores.forEach(valor => {
+            select.add(new Option(valor, valor));
+        });
+
+        if (valores.includes(valorAnterior)) {
+            select.value = valorAnterior;
+        }
+    });
+}
+
+function filtrarListaArtistas(artistas) {
+    const genero = document.getElementById("filtro-genero-artista").value;
+    const pais = document.getElementById("filtro-pais-artista").value;
+
+    return artistas.filter(artista =>
+        (!genero || artista.genero === genero) &&
+        (!pais || artista.pais === pais)
+    );
+}
+
+function filtrarArtistas() {
+    mostrarDatos("artistas", filtrarListaArtistas(artistasCargados));
 }
 
 
@@ -268,8 +331,20 @@ async function mostrarFormulario(tipo, id = null) {
                 tipoInput = "date";
             }
 
+            if (nombre === "email") {
+                tipoInput = "email";
+            }
+
+            if (tipoDato === "boolean" || tipoDato === "Boolean") {
+                tipoInput = "checkbox";
+            }
+
+            const valorAtributo = tipoInput === "checkbox"
+                ? (valor ? "checked" : "")
+                : `value="${valor}"`;
+
             html += `
-                <div class="form-group">
+                <div class="form-group ${tipoInput === "checkbox" ? "checkbox-group" : ""}">
                     <label>${nombre}</label>
 
                     <input
@@ -277,7 +352,7 @@ async function mostrarFormulario(tipo, id = null) {
                         data-campo="${nombre}"
                         data-tipo="${tipoDato}"
                         type="${tipoInput}"
-                        value="${valor}"
+                        ${valorAtributo}
                         ${nombre === "id" && id !== null ? "readonly" : ""}
                     >
                 </div>
@@ -327,7 +402,9 @@ async function guardarFormulario(tipo, id) {
         const campo = input.dataset.campo;
         const tipoDato = input.dataset.tipo;
 
-        let valor = input.value;
+        let valor = tipoDato === "boolean" || tipoDato === "Boolean"
+            ? input.checked
+            : input.value;
 
         if (tipoDato === "int" ||
             tipoDato === "Integer") {
@@ -341,6 +418,13 @@ async function guardarFormulario(tipo, id) {
 
         objeto[campo] = valor;
     });
+
+    const inputEmail = [...inputs].find(input => input.dataset.campo === "email");
+    if (inputEmail && !/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(inputEmail.value)) {
+        alert("Error: introduce un email válido, por ejemplo usuario@gmail.com.");
+        inputEmail.focus();
+        return;
+    }
 
     try {
         const metodo =
