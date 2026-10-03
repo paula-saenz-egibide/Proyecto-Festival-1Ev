@@ -92,17 +92,6 @@ nav {
     margin-top: 6px;
 }
 
-.profile {
-    background: #d28cff;
-    color: #17131d;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: bold;
-}
 
 .view {
     display: none;
@@ -153,11 +142,6 @@ nav {
 
 .page-intro {
     margin-bottom: 30px;
-}
-
-.page-intro h2 {
-    font-size: 30px;
-    margin: 7px 0;
 }
 
 .page-intro p:last-child {
