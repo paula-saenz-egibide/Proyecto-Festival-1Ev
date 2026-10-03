@@ -32,6 +32,8 @@ public class Servidor {
 
     public static void main(String[] args) throws IOException {
 
+        Files.createDirectories(new File("data").toPath());
+
         HttpServer servidor = null;
         int puerto = 8080;
 
