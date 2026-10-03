@@ -152,7 +152,7 @@ Los ficheros se crean o se guardan en `data/`, relativa al directorio de
 trabajo del programa.
 
 | Formato | Ejemplos | Uso |
-|---|---|
+|---|---|---|
 | Binario serializado | `artistas.dat`, `actuaciones.dat` | Almacenamiento principal utilizado por los DAO |
 | JSON | `artistas.json`, `entradas.json` | Exportar datos y leerlos para mostrarlos en consola |
 | XML | `artistas.xml`, `escenarios.xml` | Exportar los datos; no se importan actualmente desde XML |
