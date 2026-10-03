@@ -152,7 +152,7 @@ Los ficheros se crean o se guardan en `data/`, relativa al directorio de
 trabajo del programa.
 
 | Formato | Ejemplos | Uso |
-|---|---|---|
+|---|---|
 | Binario serializado | `artistas.dat`, `actuaciones.dat` | Almacenamiento principal utilizado por los DAO |
 | JSON | `artistas.json`, `entradas.json` | Exportar datos y leerlos para mostrarlos en consola |
 | XML | `artistas.xml`, `escenarios.xml` | Exportar los datos; no se importan actualmente desde XML |
@@ -242,11 +242,11 @@ volver a generar desde la aplicación.
 Además de las operaciones básicas de alta, baja, modificación y listado, el
 proyecto incluye ampliaciones relacionadas con los puntos extra del enunciado.
 
-| Ampliación | Qué hace la aplicación | Qué mostrar en la defensa |
+| Ampliación | Qué hace la aplicación |
 |---|---|---|
-| Más clases y ficheros | Gestiona cinco modelos serializables relacionados y cinco ficheros `.dat`, más que el mínimo de tres. | `Artista`, `Escenario`, `Actuacion`, `Espectador` y `Entrada`, junto con sus DAO. |
-| Búsquedas y reglas del festival | Busca artistas por género y país, actuaciones por fecha y registros por ID. Comprueba relaciones, solapamientos horarios y capacidad de entradas. | Una búsqueda adicional y un rechazo por actuación solapada o aforo completo. |
-| XML con dos métodos | Exporta XML con XStream y también con DOM de Java, una técnica distinta. | `XStreamXML` para artistas, actuaciones y entradas; `DOMXML` para escenarios y espectadores. |
-| JSON de lectura y escritura | Gson exporta JSON de las cinco entidades y permite leer esos archivos y mostrar su contenido en consola. | Generar un JSON y usar la opción de leerlo. Aclara que leer JSON no importa los registros a los `.dat`. |
-| Interfaz gráfica web | Un servidor HTTP ofrece una interfaz HTML/CSS/JavaScript para gestionar registros y generar/descargar archivos. Incluye búsqueda por ID, filtros de género/país para artistas y checkbox para el estado de las entradas. | Iniciar `Servidor`, realizar una operación CRUD y probar los filtros o el checkbox. |
-| Control de errores | Valida entradas en consola y muestra errores de validación o de operaciones web rechazadas. | Probar un correo inválido, un ID duplicado, una referencia inexistente o un conflicto horario. No afirmes que todos los errores de persistencia están cubiertos. |
+| Más clases y ficheros | Gestiona cinco modelos serializables relacionados y cinco ficheros `.dat`, más que el mínimo de tres. |
+| Búsquedas y reglas del festival | Busca artistas por género y país, actuaciones por fecha y registros por ID. Comprueba relaciones, solapamientos horarios y capacidad de entradas. |
+| XML con dos métodos | Exporta XML con XStream y también con DOM de Java, una técnica distinta. |
+| JSON de lectura y escritura | Gson exporta JSON de las cinco entidades y permite leer esos archivos y mostrar su contenido en consola. |
+| Interfaz gráfica web | Un servidor HTTP ofrece una interfaz HTML/CSS/JavaScript para gestionar registros y generar/descargar archivos. Incluye búsqueda por ID, filtros de género/país para artistas y checkbox para el estado de las entradas. |
+| Control de errores | Valida entradas en consola y muestra errores de validación o de operaciones web rechazadas. |
