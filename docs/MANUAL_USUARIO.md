@@ -237,7 +237,7 @@ Los ficheros `.dat` contienen los datos de trabajo. No los borres mientras
 quieras conservar los registros. JSON y XML son exportaciones que se pueden
 volver a generar desde la aplicación.
 
-## 8. Funcionalidades adicionales y defensa del proyecto
+## 8. Funcionalidades adicionales
 
 Además de las operaciones básicas de alta, baja, modificación y listado, el
 proyecto incluye ampliaciones relacionadas con los puntos extra del enunciado.
